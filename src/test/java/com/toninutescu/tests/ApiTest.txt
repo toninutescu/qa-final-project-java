@@ -1,0 +1,14 @@
+# Pseudocod care respecta structura Arrange-Act-Assert
+# Arrange
+# URL de baza plus resursa
+BASE_URL = "https://jsonplaceholder.typicode.com"
+RESOURCE = "/todos/1"
+
+# Act
+# Get response la URL baza + resursa
+response = HTTP_GET(BASE_URL + RESOURCE)
+
+# Assert
+# Get returneaza status 200 si contine un title
+ASSERT response.status == 200
+ASSERT response.body contains "title"
