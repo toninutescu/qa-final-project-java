@@ -9,15 +9,16 @@ public class UserRepository {
 
     public void addUser(User user) throws InvalidUserDataException {
         if (user == null) {
-            throw new InvalidUserDataException("User-ul nu poate fi null.");
+            throw new InvalidUserDataException("Avertisment: Valoarea 'null' nu este un utilizator valid si va fi ignorata.");
         }
 
         if (user.getUsername() == null || user.getUsername().length() < 3) {
-            throw new InvalidUserDataException("Username invalid: minim 3 caractere.");
+            String valoare = user == null ? "null" : user.getUsername();
+            throw new InvalidUserDataException("Avertisment: Valoarea '" + valoare + "' nu este un nume valid si va fi ignorata.");
         }
 
         if (user.getAge() < 0) {
-            throw new InvalidUserDataException("Varsta nu poate fi negativa.");
+            throw new InvalidUserDataException("Avertisment: Valoarea '" + user.getAge() + "' nu este o varsta valida si va fi ignorata.");
         }
 
         users.add(user);
