@@ -6,45 +6,33 @@ public class Main {
     public static void main(String[] args) {
         UserRepository repository = new UserRepository();
 
-        try {
-            User user1 = new User("testuser", 25);
-            repository.addUser(user1);
-            System.out.println("User adaugat cu succes: " + user1.getUsername());
-        } catch (InvalidUserDataException e) {
-            System.out.println(e.getMessage());
+        // date de intrare
+        String[] usernames = {"testuser", "adminuser", "ab", "baduser", null};
+        int[] ages         = {25, 30, 22, -5, 20};
+        boolean[] isAdmin  = {false, true, false, false, false};
+
+        // verificare date intrare
+        for (int i = 0; i < usernames.length; i++) {
+            try {
+                User user;
+
+                if (isAdmin[i]) {
+                    // la Admin se adauga permisiune
+                    user = new AdminUser(usernames[i], ages[i], "FULL_ACCESS");
+                } else {
+                    user = new User(usernames[i], ages[i]);
+                }
+
+                repository.addUser(user);
+                System.out.println("User inregistrat: " + user.getUsername() + " (age=" + user.getAge() + ")");
+            } catch (InvalidUserDataException e) {
+                // afișam mesajul din excepție daca exista
+                System.out.println(e.getMessage());
+            }
         }
 
-        try {
-            AdminUser admin = new AdminUser("adminuser", 30, "FULL_ACCESS");
-            repository.addUser(admin);
-            System.out.println("Admin adaugat cu succes: " + admin.getUsername());
-        } catch (InvalidUserDataException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            User badUsername = new User("ab", 22);
-            repository.addUser(badUsername);
-            System.out.println("User adaugat: " + badUsername.getUsername());
-        } catch (InvalidUserDataException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            User negativeAge = new User("baduser", -5);
-            repository.addUser(negativeAge);
-            System.out.println("User adaugat: " + negativeAge.getUsername());
-        } catch (InvalidUserDataException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            repository.addUser(null);
-        } catch (InvalidUserDataException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("\n Utilizatori validați");
+        // afișam doar utilizatorii care au trecut validarile
+        System.out.println("\n Utilizatori validati");
         List<User> users = repository.getUsers();
         for (User u : users) {
             System.out.println("User: " + u.getUsername() + ", age=" + u.getAge());
